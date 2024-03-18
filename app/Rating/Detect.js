@@ -4,7 +4,7 @@ import React from 'react'
 const Detect = () => {
   return (
     <View>
-      <Text>Detect</Text>
+      <Text>Detecting</Text>
     </View>
   )
 }

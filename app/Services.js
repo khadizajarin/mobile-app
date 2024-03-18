@@ -75,7 +75,7 @@ const Services = () => {
             </View>
           ))}
           {hasMore && (
-            <TouchableOpacity style={styles.button} title="Load More" onPress={loadMore} disabled={isLoading} >See More...</TouchableOpacity>
+            <TouchableOpacity style={styles.button} title="Load More" onPress={loadMore} disabled={isLoading} ></TouchableOpacity>
           )}
           {!hasMore && (
             <Text style={{ fontSize: 16, marginTop: 10,textAlign:'center' }}>No more events to load</Text>

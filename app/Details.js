@@ -118,7 +118,7 @@ const Details = () => {
                           <TextInput
                             placeholder="Number of Guests"
                             style={[styles.input, { color: '#3A3D42' }]}
-                            placeholderTextColor="#3A3D42"
+                            // placeholderTextColor="#3A3D42"
                             value={numberOfGuests}
                             onChangeText={text => setNumberOfGuests(text)}
                           />

@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "eveplano",
+    "slug": "EvePlano",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.khadizajarin.thirdReactApp"
+    },
+    "scheme": "thirdReactApp",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "00e06f35-427c-4b37-82c0-759c5b004ed5"
+      }
+    },
+    "sdkVersion": "50.0.0"
+  },
+  "name": "thirdreactapp"
+}

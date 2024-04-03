@@ -5,30 +5,32 @@ import { collection, query, where, updateDoc, doc, getDocs, getDoc } from 'fireb
 import useAuthentication from '../Hooks/useAuthentication';
 
 
-
 const AddReview = () => {
 
     const { user, auth } = useAuthentication(app);
     const [reviewText, setReviewText] = useState(''); 
 
     const handleAddReviews = async() => {
-        try {
-            const newReview = { 
-              comments: [],
-              email: user.email,
-              isLikedByMe: '',
-              reviewtext: reviewText
-            };
-
-            const docRef = await addDoc(collection(db, 'reviews'), newReview);
-            console.log('Document written with ID: ', docRef.id);
-            setReviewText(''); 
-            ToastAndroid.show('Your review was posted! Thanks for staying with us!', ToastAndroid.SHORT);
-          } catch (e) {
-            console.error('Error adding document: ', e);
-          }
-    };
-
+      try {
+          const currentDate = new Date(); // Get current date and time
+          // const formattedDate = currentDate.toLocaleString(); // Convert to human-readable format
+          const newReview = { 
+            comments: [],
+            email: user.email,
+            reviewtext: reviewText,
+            likedEmail: [],
+            dislikedEmail : [],
+            createdAt: currentDate // Include posting time and date
+          };
+          console.log(newReview);
+          const docRef = await addDoc(collection(db, 'reviews'), newReview);
+          // console.log('Document written with ID: ', docRef.id);
+          setReviewText(''); 
+          ToastAndroid.show('Your review was posted! Thanks for staying with us!', ToastAndroid.SHORT);
+      } catch (e) {
+          console.error('Error adding document: ', e);
+      }
+  };
     return (
         <View style={{ marginTop: 10 }}>
             <Text style={{ fontFamily: "serif", fontSize: 15 }}>Feel free to give any suggestions or complaints! We will heartily try to solve it!</Text>

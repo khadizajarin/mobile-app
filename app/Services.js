@@ -67,7 +67,7 @@ const Services = () => {
         <ActivityIndicator size="large" color="#AB8C56" />
       ) : (
         <View style={{backgroundColor: "#ffffff", padding: 20 }}>
-          <Text   style={{fontFamily: "serif", fontSize: 40, fontWeight: 'bold',color: '#3A3D42', }}>Explore Our Events!</Text>
+          <Text  style={{fontFamily: "serif", fontSize: 40, fontWeight: 'bold',color: '#3A3D42', }}>Explore Our Events!</Text>
           <Text style={{fontFamily: "serif", fontSize: 20, marginBottom: 8, color: '#3A3D42' }}>Explore a variety of event management sectors to find your perfect fit. From weddings radiating eternal love to lively birthday bashes and corporate excellence summits, we have it all. Dive into DIY workshops and unleash your creativity. Discover unforgettable experiences with us today.</Text>
           {events.map((event, id) => (
             <View key={id} style={{ marginBottom: 10 }}>
@@ -75,10 +75,10 @@ const Services = () => {
             </View>
           ))}
           {hasMore && (
-            <TouchableOpacity style={styles.button} title="Load More" onPress={loadMore} disabled={isLoading} ></TouchableOpacity>
+            <TouchableOpacity style={styles.button} title="Load More" onPress={loadMore} disabled={isLoading} ><Text style={{color: '#AB8C56'}}>See More</Text></TouchableOpacity>
           )}
           {!hasMore && (
-            <Text style={{ fontSize: 16, marginTop: 10,textAlign:'center' }}>No more events to load</Text>
+            <Text style={{ fontSize: 16, marginTop: 3,textAlign:'center' }}>No more events to load</Text>
           )}
         </View>
       )}

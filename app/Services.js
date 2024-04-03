@@ -82,15 +82,33 @@ const Services = () => {
       {isLoading && events.length === 0 ? (
         <ActivityIndicator size="large" color="#AB8C56" />
       ) : (
-        <View style={{backgroundColor: "#ffffff", padding: 20 }}>
+        <View style={{backgroundColor: "#ffffff", paddingRight: 20, paddingLeft:20, paddingBottom:5 }}>
           <Text  style={{fontFamily: "serif", fontSize: 40, fontWeight: 'bold',color: '#3A3D42', }}>Explore Our Events!</Text>
           <Text style={{fontFamily: "serif", fontSize: 20, marginBottom: 8, color: '#3A3D42' }}>Explore a variety of event management sectors to find your perfect fit. From weddings radiating eternal love to lively birthday bashes and corporate excellence summits, we have it all. Dive into DIY workshops and unleash your creativity. Discover unforgettable experiences with us today.</Text>
 
-          {Array.from({ length: totalPages }, (_, index) => (
-            <TouchableOpacity key={index} style={styles.button} onPress={() => loadPage(index + 1)} disabled={isLoading}>
-              <Text style={{fontFamily: "serif", fontSize: 20, color: '#AB8C56'}}>Page {index + 1}</Text>
-            </TouchableOpacity>
-          ))}
+          <View style={styles.buttonContainer}>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.button,
+                  currentPage === index + 1 && styles.activeButton
+                ]}
+                onPress={() => loadPage(index + 1)}
+                disabled={isLoading}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    currentPage === index + 1 && styles.activeButtonText
+                  ]}
+                >
+                  Page {index + 1}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
 
           {events.map((event, id) => (
             <View key={id} style={{ marginBottom: 10 }}>
@@ -98,9 +116,6 @@ const Services = () => {
             </View>
           ))}
           
-          {!hasMore && (
-            <Text style={{ fontSize: 16, marginTop: 3,textAlign:'center' }}>No more events to load</Text>
-          )}
         </View>
       )}
     </ScrollView>
@@ -112,12 +127,31 @@ export default Services;
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#3A3D42',
-    padding: 15,
+    fontSize:20,
+    padding: 10,
     borderRadius: 5,
     alignItems: 'center',
     color: '#AB8C56',
     fontSize: 16,
     fontWeight: 'bold',
+    margin: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     marginTop: 10,
+    paddingBottom:5
+  },
+  activeButton: {
+    backgroundColor: '#AB8C56',
+    color: '#3A3D42'
+  },
+  buttonText: {
+    color: '#AB8C56',
+  },
+  activeButtonText: {
+    color: '#3A3D42',
   },
 });

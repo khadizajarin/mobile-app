@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heroTitle: {
+    color: '#3A3D42',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,

@@ -4,8 +4,6 @@ import { app, db } from "../Hooks/firebase.config";
 import { collection, updateDoc, doc, getDocs, getDoc, onSnapshot } from 'firebase/firestore';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 import useAuthentication from '../Hooks/useAuthentication';
 import AddReview from './addReview';
 
@@ -24,6 +22,8 @@ const Reviews = () => {
                     const reviewData = doc.data();
                     revData.push({ id: doc.id, ...reviewData });
                 });
+                // Sort reviews based on createdAt timestamp in descending order
+                revData.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
                 setReviews(revData);
                 setIsLoading(false);
             });
@@ -35,6 +35,7 @@ const Reviews = () => {
             setIsLoading(false);
         }
     };
+    
     
     const toggleComments = (index) => {
         setShowComments(prevState => ({

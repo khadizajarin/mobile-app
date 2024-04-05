@@ -140,13 +140,12 @@ const Details = () => {
                           {!showPicker && (
                             <Pressable onPress={toggleDatePicker}>
                             <TextInput
-                              placeholder="Date"
-                              style={[styles.input, { color: '#3A3D42' }]}
-                              // placeholderTextColor="#3A3D42"
-                              value={date}
-                              onChangeText={text=>setDate(text)}
-                              editable={false}
-                            />
+                            placeholder="Date"
+                            style={[styles.input, { color: '#3A3D42' }]}
+                            value={date instanceof Date ? "Date" : date} 
+                            onChangeText={text=>setDate(text)}
+                            editable={false}
+                          />
                           </Pressable>
                           )}
                           <TextInput

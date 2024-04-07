@@ -68,7 +68,6 @@ const Layout = () => {
                 <Drawer.Screen name="Home" component={Home} />
                 <Drawer.Screen name="Events" component={ServicesStackScreen} />
                 <Drawer.Screen name="Contact" component={Contact} />
-                <Drawer.Screen name="Rating" component={Detect} />
                 {user && (
                     <>
                         <Drawer.Screen name="Reviews" component={Reviews} />
@@ -81,6 +80,8 @@ const Layout = () => {
                         <Drawer.Screen name="Register" component={Register} />
                     </>
                 )}
+                <Drawer.Screen name="Rating" component={Rating} />
+                <Drawer.Screen name="Play Detect!" component={Detect} />
             </Drawer.Navigator>
         </NavigationContainer>
     );

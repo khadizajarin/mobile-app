@@ -73,6 +73,7 @@ const Layout = () => {
                         <Drawer.Screen name="Reviews" component={Reviews} />
                         <Drawer.Screen name="Location" component={LocationScreen} />
                         <Drawer.Screen name="Profile" component={Profile} />
+                        <Drawer.Screen name="Rating" component={Rating} />
                     </>
                 )}
                 {!user && (
@@ -80,7 +81,6 @@ const Layout = () => {
                         <Drawer.Screen name="Register" component={Register} />
                     </>
                 )}
-                <Drawer.Screen name="Rating" component={Rating} />
                 <Drawer.Screen name="Play Detect!" component={Detect} />
             </Drawer.Navigator>
         </NavigationContainer>

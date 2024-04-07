@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Modal, ActivityIndicator, ToastAndroid} from 'react-native';
-
 import useAuthentication from '../Hooks/useAuthentication';
 import { signOut } from '@firebase/auth';
 import { useNavigation } from 'expo-router/build';

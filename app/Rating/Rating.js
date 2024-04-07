@@ -69,9 +69,9 @@ const Rating = () => {
                   });
                   Alert.alert('Rating Updated', 'Your rating has been updated successfully.');
                   const updatedRatings = ratings.map(rate => rate === ratingDoc.data().rate ? rating : rate);
+                  setRatings(updatedRatings);
                   const totalRating = updatedRatings.reduce((acc, curr) => acc + curr, 0);
                   const avg = totalRating / updatedRatings.length || 0;
-                  setRatings(updatedRatings);
                   setAverageRating(avg);
                 } catch (error) {
                   console.error('Error updating rating:', error);
@@ -89,9 +89,9 @@ const Rating = () => {
           });
           setHasRated(true);
           const updatedRatings = [...ratings, rating];
+          setRatings(updatedRatings);
           const totalRating = updatedRatings.reduce((acc, curr) => acc + curr, 0);
           const avg = totalRating / updatedRatings.length || 0;
-          setRatings(updatedRatings);
           setAverageRating(avg);
         } catch (error) {
           console.error('Error adding rating:', error);
@@ -101,18 +101,29 @@ const Rating = () => {
   };
 
   const renderStars = () => {
-    const filledStars = Math.round(averageRating);
+    const filledStars = Math.floor(averageRating);
+    const partialStar = averageRating - filledStars;
     const starArray = [];
     for (let i = 1; i <= 5; i++) {
-      starArray.push(
-        <TouchableOpacity key={i} onPress={() => handleRating(i)}>
-          <MaterialIcons
-            name={i <= filledStars ? 'star' : 'star-border'}
-            size={24}
-            color={'#AB8C56'} 
-          />
-        </TouchableOpacity>
-      );
+      if (i <= filledStars) {
+        starArray.push(
+          <TouchableOpacity key={i} onPress={() => handleRating(i)}>
+            <MaterialIcons name={'star'} size={50} color={'#AB8C56'} />
+          </TouchableOpacity>
+        );
+      } else if (i === filledStars + 1 && partialStar !== 0) {
+        starArray.push(
+          <TouchableOpacity key={i} onPress={() => handleRating(i)}>
+            <MaterialIcons name={'star-half'} size={50} color={'#AB8C56'} />
+          </TouchableOpacity>
+        );
+      } else {
+        starArray.push(
+          <TouchableOpacity key={i} onPress={() => handleRating(i)}>
+            <MaterialIcons name={'star-border'} size={50} color={'#AB8C56'} />
+          </TouchableOpacity>
+        );
+      }
     }
     return starArray;
   };

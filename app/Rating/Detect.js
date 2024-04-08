@@ -1,13 +1,26 @@
-// App.js
-import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, Pressable, Modal, Text, ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
-import { Camera } from 'expo-camera';
-import { getModel, convertBase64ToTensor, startPrediction } from './helpers/tensor-helpers';
-import { cropPicture } from './helpers/image-helpers';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Modal,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity
+} from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import {
+  getModel,
+  convertBase64ToTensor,
+  startPrediction,
+} from './helpers/tensor-helpers';
+import {cropPicture} from './helpers/image-helpers';
 
-const RESULT_MAPPING = ["Light", "Stage", "FlowerGate"];
+import {Camera} from 'expo-camera';
 
-const Detect = () => {
+const RESULT_MAPPING = ["Light","Stage","FlowerGate"];
+
+const Main = () => {
   const cameraRef = useRef();
   const [isProcessing, setIsProcessing] = useState(false);
   const [presentedShape, setPresentedShape] = useState('');
@@ -59,12 +72,15 @@ const Detect = () => {
   return (
     <View style={styles.container}>
       {!showCamera ? ( 
-        <TouchableOpacity
+        <View>
+          <Text style={{ fontFamily: "serif", fontSize: 30, fontWeight: 'bold',color: '#3A3D42'}}>Detect night light, stage or flowergate from your events! Just Play! </Text>
+          <TouchableOpacity
           style={styles.button}
           onPress={() => setShowCamera(true)}
         >
           <Text style={styles.buttonText}>Open Camera</Text>
         </TouchableOpacity>
+        </View>
       ) : (
         <React.Fragment>
           <Camera
@@ -75,20 +91,20 @@ const Detect = () => {
             onPress={handleCloseCamera}
             style={[styles.button,{position: 'absolute',top: 20,right: 20,}]}
           >
-            <Text style={styles.buttonText}>Close Camera</Text>
+          <Text style={styles.buttonText}>Close Camera </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleImageCapture()}
-            style={styles.captureButton}
-          ></TouchableOpacity>
+            style={[styles.button, {position:'absolute',left: Dimensions.get('screen').width / 2 - 50,bottom: 40,zIndex: 100,borderRadius:50}]}
+          ><MaterialIcons name="camera" size={24} color="#AB8C56" /></TouchableOpacity>
         </React.Fragment>
       )}
 
-      <Modal visible={isProcessing} transparent={true} animationType="slide">
+      <Modal visible={isProcessing} transparent={true} animationType="fade">
         <View style={styles.modal}>
           <View style={styles.modalContent}>
-            <Text>Your current shape is {presentedShape}</Text>
-            {presentedShape === '' && <ActivityIndicator size="large" />}
+            <Text>Your current object is {presentedShape}</Text>
+            {presentedShape === '' && <ActivityIndicator size="large" color="#AB8C56"/>}
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
@@ -113,29 +129,8 @@ const styles = StyleSheet.create({
   },
   camera: {
     width: '100%',
+    height:'100%'
   },
-  captureButton: {
-    position: 'absolute',
-    left: Dimensions.get('screen').width / 2 - 50,
-    bottom: 40,
-    width: 100,
-    zIndex: 100,
-    height: 100,
-    backgroundColor: 'black',
-    borderRadius: 50,
-  },
-  // closeCameraButton: {
-  //   position: 'absolute',
-  //   top: 40,
-  //   right: 20,
-  //   backgroundColor: 'red',
-  //   padding: 10,
-  //   borderRadius: 8,
-  // },
-  // closeCameraButtonText: {
-  //   color: 'white',
-  //   fontSize: 16,
-  // },
   modal: {
     width: '100%',
     height: '100%',
@@ -150,18 +145,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: '#F1F2F6',
   },
-  // dismissButton: {
-  //   width: 150,
-  //   height: 50,
-  //   marginTop: 60,
-    
-  //   color: 'white',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor: 'red',
-  // },
   button: {
-    // marginTop:10,
+    marginTop:10,
     backgroundColor: '#3A3D42',
     padding: 15,
     borderRadius: 5,
@@ -174,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Detect;
+export default Main;

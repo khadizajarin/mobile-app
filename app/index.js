@@ -14,7 +14,7 @@ import LocationScreen from './Location';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import Register from './Home/register';
-import Rating from './Rating/Rating';
+import Rating from './Reviews/Rating';
 import Detect from './Rating/Detect';
 
 
@@ -35,6 +35,7 @@ const ServicesStackScreen = () => (
     <ServicesStack.Screen name="Services" component={Services}  options={{ headerShown: false }}/>
     <ServicesStack.Screen name="Details" component={Details}  options={{ headerShown: true }}/>
     <ServicesStack.Screen name="Register" component={Register}  options={{ headerShown: true }}/>
+    <ServicesStack.Screen name="Rating" component={Rating}  options={{ headerShown: false }}/>
   </ServicesStack.Navigator>
 );
 
@@ -73,7 +74,6 @@ const Layout = () => {
                         <Drawer.Screen name="Reviews" component={Reviews} />
                         <Drawer.Screen name="Location" component={LocationScreen} />
                         <Drawer.Screen name="Profile" component={Profile} />
-                        <Drawer.Screen name="Rating" component={Rating} />
                     </>
                 )}
                 {!user && (

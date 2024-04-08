@@ -3,11 +3,10 @@
     "name": "eveplano",
     "slug": "EvePlano",
     "version": "1.0.0",
-    "platforms": ["android"],
-    "permissions": ["CAMERA"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "useCamera2Api": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

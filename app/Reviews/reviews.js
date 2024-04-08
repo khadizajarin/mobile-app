@@ -5,6 +5,7 @@ import { collection, updateDoc, doc, getDocs, getDoc, onSnapshot } from 'firebas
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useAuthentication from '../Hooks/useAuthentication';
 import AddReview from './addReview';
+import Rating from './Rating';
 
 const Reviews = () => {
     const { user, auth } = useAuthentication(app);
@@ -176,6 +177,9 @@ const Reviews = () => {
             <ActivityIndicator size="large" color="#AB8C56"  />
             ) : (
                <View style={styles.container} >
+                    <View style={{borderBottomWidth: 1,  borderBottomColor: '#AB8C56' }}>
+                        <Rating></Rating>
+                    </View>
                     <Text style={{ fontFamily: "serif", fontSize: 40, fontWeight: 'bold',color: '#3A3D42' }}>See What Our Clients Say!</Text>
                     <Text style={{ fontFamily: "serif", fontSize: 20, marginBottom: 8,color: '#3A3D42' }}>Want to be more confirmed about our services? Let's see what our customers' say about our services, so that we can assure you more!</Text>
                     {/* this is for adding reviews */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { app, db } from '../Hooks/firebase.config';
 import { MaterialIcons } from '@expo/vector-icons';
 import { collection, updateDoc, doc, getDocs, onSnapshot, where, addDoc, query } from 'firebase/firestore';
@@ -10,6 +10,7 @@ const Rating = () => {
   const [ratings, setRatings] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
+  const [userRating, setUserRating] = useState(null); // Added state for user's rating
 
   useEffect(() => {
     if (user) {
@@ -19,6 +20,7 @@ const Rating = () => {
           const querySnapshot = await getDocs(ratingQuery);
           if (querySnapshot.size > 0) {
             setHasRated(true);
+            setUserRating(querySnapshot.docs[0].data().rate); // Set user's rating
           }
         } catch (error) {
           console.error('Error checking user rating:', error);
@@ -73,6 +75,7 @@ const Rating = () => {
                   const totalRating = updatedRatings.reduce((acc, curr) => acc + curr, 0);
                   const avg = totalRating / updatedRatings.length || 0;
                   setAverageRating(avg);
+                  setUserRating(rating); // Update user's rating
                 } catch (error) {
                   console.error('Error updating rating:', error);
                 }
@@ -88,11 +91,22 @@ const Rating = () => {
             rate: rating
           });
           setHasRated(true);
+          setUserRating(rating); 
           const updatedRatings = [...ratings, rating];
           setRatings(updatedRatings);
           const totalRating = updatedRatings.reduce((acc, curr) => acc + curr, 0);
           const avg = totalRating / updatedRatings.length || 0;
           setAverageRating(avg);
+
+          // Display GIF alert for the first-time rating
+          Alert.alert(
+            'Your Rating Counted',
+            'Your rating has been counted.',
+            [
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ],
+            { cancelable: false }
+          );
         } catch (error) {
           console.error('Error adding rating:', error);
         }
@@ -129,11 +143,23 @@ const Rating = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Average Rating:</Text>
+   <View>
+    <Text style={{ fontFamily: "serif", fontSize: 40, fontWeight: 'bold',color: '#3A3D42' }}>Enjoy the app? Rate us!</Text>
+     <View style={styles.container}>
+      
+      <Text style={styles.title}>Average Rating: {averageRating.toFixed(1)} out of 5</Text>
+      {user && !hasRated && (
+        <TouchableOpacity onPress={() => handleRating(0)}>
+          <Text style={styles.rateText}>You haven't rated yet. Do you want to rate?</Text>
+        </TouchableOpacity>
+      )}
+      {userRating !== null && ( // Display user's rating if available
+        <Text style={styles.userRatingText}>Your Rating: {userRating}</Text>
+      )}
       <View style={styles.starsContainer}>{renderStars()}</View>
       <Text style={styles.ratingCount}>Total Ratings: {ratings.length}</Text>
     </View>
+   </View>
   );
 };
 
@@ -143,9 +169,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 10,
   },
   title: {
+    color:'#3A3D42',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -156,5 +184,15 @@ const styles = StyleSheet.create({
   ratingCount: {
     marginTop: 10,
     fontSize: 16,
+  },
+  rateText: {
+    color: '#AB8C56',
+    textDecorationLine: 'underline',
+    marginBottom: 5,
+  },
+  userRatingText: {
+    color : '#3A3D42',
+    fontSize: 16,
+    marginTop: 10,
   },
 });

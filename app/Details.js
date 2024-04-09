@@ -1,6 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, View,  Button, TouchableOpacity, TextInput, ActivityIndicator, Pressable, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-// import Events from './../assets/data';
 import { useRoute } from '@react-navigation/native';
 import useAuthentication from './Hooks/useAuthentication';
 import { app, db,  addDoc } from "./Hooks/firebase.config"
@@ -16,10 +15,9 @@ const Details = () => {
   const route = useRoute(); 
   const navigation = useNavigation();
   const { serviceId } = route.params || {};
-  console.log("serviceId in Details page", serviceId);
   
   const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state to true
+  const [isLoading, setIsLoading] = useState(true);
   const fetchServices = async () => {
     try {
       const servicesQuerySnapshot = await getDocs(collection(db, "services"));
@@ -27,24 +25,24 @@ const Details = () => {
       servicesQuerySnapshot.forEach((doc) => {
         servicesData.push(doc.data());
       });
-      setEvents(servicesData); // Update the state with servicesData array
+      setEvents(servicesData);
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {
-      setIsLoading(false); // Set isLoading to false after fetching is complete
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchServices();
   }, []);
-  // console.log("it is in details page",events); 
-
+  
   const [numberOfGuests, setNumberOfGuests] = useState('');
   const [venue, setVenue] = useState('');
   const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [phoneNumber, setPhoneNumber] = useState('');
   const [specialRequirements, setSpecialRequirements] = useState('');
+  const [currentInput, setCurrentInput] = useState(1);
 
   const [showPicker, setShowPicker] = useState(false);
   const toggleDatePicker= ()=>{
@@ -61,6 +59,10 @@ const Details = () => {
     } else {
       toggleDatePicker();
     }
+  }
+
+  const handleNextInput = () => {
+    setCurrentInput(currentInput + 1);
   }
   
   const handleBooking = async (event) => {
@@ -94,84 +96,95 @@ const Details = () => {
   };
  
   return (
-    <ScrollView style={styles. wholeContain}>
+    <ScrollView style={styles.wholeContain}>
       {user ? (
         <View>
-              {isLoading ? (
-              <ActivityIndicator size="large" color="#3A3D42"  />
-              ) : ( 
-              <View>
-                  {events.filter((event) => (event.id === serviceId)).map((event, id) => (
-                    <View key={id} style={{ paddingTop: 10 }}>
-                      <Image source={{ uri: event.image }} style={{  borderRadius: 10, height: 200,  }} />
-                      <Text style={{fontFamily: "serif", fontSize: 20, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>{event.name}</Text>
-                      <Text style={{fontFamily: "serif", fontSize: 18, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>Approximate Cost: {event.price} (For 50 Guests)</Text>
-                      <Text style={{fontFamily: "serif", fontSize: 16, marginBottom: 15, color: '#3A3D42' }}>{event.description}</Text>  
+          {isLoading ? (
+            <ActivityIndicator size="large" color="#3A3D42"  />
+          ) : ( 
+            <View>
+              {events.filter((event) => (event.id === serviceId)).map((event, id) => (
+                <View key={id} style={{ paddingTop: 10 }}>
+                  <Image source={{ uri: event.image }} style={{  borderRadius: 10, height: 200,  }} />
+                  <Text style={{fontFamily: "serif", fontSize: 20, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>{event.name}</Text>
+                  <Text style={{fontFamily: "serif", fontSize: 18, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>Approximate Cost: {event.price} (For 50 Guests)</Text>
+                  <Text style={{fontFamily: "serif", fontSize: 16, marginBottom: 15, color: '#3A3D42' }}>{event.description}</Text>  
 
-                      <View style={{ borderTopWidth: 1, borderTopColor: '#AB8C56', borderBottomWidth: 1, borderBottomColor: '#AB8C56'}}>
-                        <Video></Video>
-                      </View>
+                  <View style={{ borderTopWidth: 1, borderTopColor: '#AB8C56', borderBottomWidth: 1, borderBottomColor: '#AB8C56'}}>
+                    <Video></Video>
+                  </View>
 
-                      {/* Form for booking */}
-                        <View style={{ marginTop: 20 }}>
-                          <Text style={{ fontFamily: "serif", fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#3A3D42' }}>Do you want to book? Please submit the infos and our representative will contact you. </Text>
-                          <TextInput
-                            placeholder="Number of Guests"
-                            style={[styles.input, { color: '#3A3D42' }]}
-                            // placeholderTextColor="#3A3D42"
-                            value={numberOfGuests}
-                            onChangeText={text => setNumberOfGuests(text)}
-                          />
-                          <TextInput
-                            placeholder="Venue"
-                            style={[styles.input, { color: '#3A3D42' }]}
-                            // placeholderTextColor="#3A3D42"
-                            value={venue}
-                            onChangeText={text=>setVenue(text)}
-                          />
-                          <TextInput
-                            placeholder="Time"
-                            style={[styles.input, { color: '#3A3D42' }]}
-                            // placeholderTextColor="#3A3D42"
-                            value={time}
-                            onChangeText={text=>setTime(text)}
-                          />
-                          {showPicker && (<DateTimePicker mode='date' display='spinner' value={date} onChange={onChange}/>)}
-                          {!showPicker && (
-                            <Pressable onPress={toggleDatePicker}>
-                            <TextInput
-                            placeholder="Date"
-                            style={[styles.input, { color: '#3A3D42' }]}
-                            value={date instanceof Date ? "Date" : date} 
-                            onChangeText={text=>setDate(text)}
-                            editable={false}
-                          />
-                          </Pressable>
-                          )}
-                          <TextInput
-                            placeholder="Phone Number"
-                            style={[styles.input, { color: '#3A3D42' }]}
-                            // placeholderTextColor="#3A3D42"
-                            value={phoneNumber}
-                            onChangeText={text=>setPhoneNumber(text)}
-                          />
-                          <TextInput
-                            placeholder="Any Special Requirements"
-                            style={[styles.input, { height: 100 },{ color: '#3A3D42' }]}
-                            // placeholderTextColor="#3A3D42"
-                            multiline={true}
-                            value={specialRequirements}
-                            onChangeText={text=>setSpecialRequirements(text)}
-                          />
-                          <TouchableOpacity onPress={() => handleBooking(event)} style={styles.button}>
-                            <Text style={styles.buttonText}>Submit</Text>
-                          </TouchableOpacity>
-                        </View>
-                        
-                    </View>
-                  ))}  
-              </View>
-            )}  
+                  {/* Form for booking */}
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={{ fontFamily: "serif", fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#3A3D42' }}>Do you want to book? Please submit the infos and our representative will contact you. </Text>
+
+                    {currentInput >= 1 && (
+                      <TextInput
+                        placeholder="Number of Guests"
+                        style={[styles.input, { color: '#3A3D42' }]}
+                        value={numberOfGuests}
+                        onChangeText={text => setNumberOfGuests(text)}
+                        autoFocus={currentInput === 1}
+                      />
+                    )}
+                    {currentInput >= 2 && (
+                      <TextInput
+                        placeholder="Venue"
+                        style={[styles.input, { color: '#3A3D42' }]}
+                        value={venue}
+                        onChangeText={text=>setVenue(text)}
+                        autoFocus={currentInput === 2}
+                      />
+                    )}
+                    {currentInput >= 3 && (
+                      <TextInput
+                        placeholder="Time"
+                        style={[styles.input, { color: '#3A3D42' }]}
+                        value={time}
+                        onChangeText={text=>setTime(text)}
+                        autoFocus={currentInput === 3}
+                      />
+                    )}
+                    {showPicker && (<DateTimePicker mode='date' display='spinner' value={date} onChange={onChange}/>)}
+                    {!showPicker && (
+                      <Pressable onPress={toggleDatePicker}>
+                        <TextInput
+                          placeholder="Date"
+                          style={[styles.input, { color: '#3A3D42' }]}
+                          value={date instanceof Date ? "Date" : date} 
+                          onChangeText={text=>setDate(text)}
+                          editable={false}
+                          autoFocus={currentInput === 4}
+                        />
+                      </Pressable>
+                    )}
+                    {currentInput >= 5 && (
+                      <TextInput
+                        placeholder="Phone Number"
+                        style={[styles.input, { color: '#3A3D42' }]}
+                        value={phoneNumber}
+                        onChangeText={text=>setPhoneNumber(text)}
+                        autoFocus={currentInput === 5}
+                      />
+                    )}
+                    {currentInput >= 6 && (
+                      <TextInput
+                        placeholder="Any Special Requirements"
+                        style={[styles.input, { height: 100 },{ color: '#3A3D42' }]}
+                        multiline={true}
+                        value={specialRequirements}
+                        onChangeText={text=>setSpecialRequirements(text)}
+                        autoFocus={currentInput === 6}
+                      />
+                    )}
+                    <TouchableOpacity onPress={currentInput >= 6 ? () => handleBooking(event) : handleNextInput} style={styles.button}>
+                      <Text style={styles.buttonText}>{currentInput >= 6 ? 'Submit' : 'Next'}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}  
+            </View>
+          )}  
         </View>
       ) : (
         <View style={styles.loginContainer}>
@@ -186,8 +199,6 @@ const Details = () => {
 }
 
 export default Details
-
-
 
 const styles = StyleSheet.create({
   wholeContain: {

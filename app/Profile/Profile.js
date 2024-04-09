@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Modal, ActivityIndicator, ToastAndroid} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Modal, ActivityIndicator, ToastAndroid, ScrollView} from 'react-native';
 import useAuthentication from '../Hooks/useAuthentication';
 import { signOut } from '@firebase/auth';
 import { useNavigation } from 'expo-router/build';
@@ -243,10 +243,6 @@ const updateAsyncStorage = async (updatedData) => {
 };
 
 
-
- 
-
-
   return (
     <View >
       {isLoading ? (
@@ -318,7 +314,7 @@ const updateAsyncStorage = async (updatedData) => {
       {/* update form as modal */}
       {userData && 
       <Modal visible={showUpdateForm} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
+        <ScrollView style={styles.modalContainer}>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10,color: '#3A3D42' }}>Update Profile</Text>
 
           <View style={{width:"100%",borderColor:'gray',borderWidth:1, borderRadius:5, padding:20, marginBottom:10,color: '#3A3D42'}}>
@@ -368,44 +364,47 @@ const updateAsyncStorage = async (updatedData) => {
                 </View>
             </View>
             <View>
-            <View style={styles.formControl}>
-              <Text style={styles.label}>Country</Text>
-              <RNPickerSelect
-                style={styles.input}
-                value={selectedCountry}
-                onValueChange={handleCountryChange}
-                items={countries}
-              />
+              <View style={styles.formControl}>
+                <Text style={styles.label}>Country</Text>
+                <RNPickerSelect
+                  style={styles.input}
+                  value={selectedCountry}
+                  defaultValue={userData.Country}
+                  onValueChange={handleCountryChange}
+                  items={countries}
+                />
+              </View>
+              {selectedCountry && (
+                <View style={styles.formControl}>
+                  <Text style={styles.label}>Division</Text>
+                  <RNPickerSelect
+                    style={styles.input}
+                    value={selectedDivision}
+                    defaultValue={userData.Devision}
+                    onValueChange={handleDivisionChange}
+                    items={divisionsByCountry[selectedCountry]}
+                  />
+                </View>
+              )}
+              {selectedDivision && (
+                <View style={styles.formControl}>
+                  <Text style={styles.label}>Cities</Text>
+                  <RNPickerSelect
+                    style={styles.input}
+                    value={selectedCities}
+                    defaultValue={userData.City}
+                    onValueChange={(city) => setSelectedCities(city)}
+                    items={citiesByDivision[selectedDivision]}
+                  />
+                </View>
+              )}
+              <Text style={styles.label}>
+                Address: 
+                {selectedCountry && `Country: ${selectedCountry}, `}
+                {selectedDivision && `Division: ${selectedDivision}, `}
+                {selectedCities && `City: ${selectedCities}`}
+              </Text>
             </View>
-            {selectedCountry && (
-              <View style={styles.formControl}>
-                <Text style={styles.label}>Division</Text>
-                <RNPickerSelect
-                  style={styles.input}
-                  value={selectedDivision}
-                  onValueChange={handleDivisionChange}
-                  items={divisionsByCountry[selectedCountry]}
-                />
-              </View>
-            )}
-            {selectedDivision && (
-              <View style={styles.formControl}>
-                <Text style={styles.label}>Cities</Text>
-                <RNPickerSelect
-                  style={styles.input}
-                  value={selectedCities}
-                  onValueChange={(city) => setSelectedCities(city)}
-                  items={citiesByDivision[selectedDivision]}
-                />
-              </View>
-            )}
-            <Text style={styles.label}>
-              Address: 
-              {selectedCountry && `Country: ${selectedCountry}, `}
-              {selectedDivision && `Division: ${selectedDivision}, `}
-              {selectedCities && `City: ${selectedCities}`}
-            </Text>
-          </View>
           </View>
           <View style={{display:'flex', flexDirection:'row', gap:2}}>
             <TouchableOpacity style={[styles.button,{flex:0.5}]} onPress={()=> handleUpdateProfile( )}>
@@ -415,7 +414,7 @@ const updateAsyncStorage = async (updatedData) => {
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </Modal>}
     </View>
   );
@@ -427,11 +426,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     height: '50%',
-    // display: 'flex',
     backgroundColor: '#F1F2F6',
   },
   button: {
-    // marginTop:10,
     backgroundColor: '#3A3D42',
     padding: 15,
     borderRadius: 5,
@@ -458,9 +455,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray'
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5F5F5',
     padding: 20,
     width: '100%',

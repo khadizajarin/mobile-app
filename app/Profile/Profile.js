@@ -9,8 +9,8 @@ import { collection, query, where, updateDoc, doc, getDocs, getDoc } from 'fireb
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Bookings from './Bookings';
-
-
+import RNPickerSelect from 'react-native-picker-select';
+import axios from 'axios';
 
 const getUserDataFromStorage = async () => {
   try {
@@ -30,6 +30,50 @@ const saveUserDataToStorage = async (userData) => {
 };
 
 
+const countries = [
+  { label: 'Country 1', value: 'country1' },
+  { label: 'Country 2', value: 'country2' },
+  // Add more countries as needed
+];
+
+const divisionsByCountry = {
+  country1: [
+    { label: 'Division 1', value: 'division1' },
+    { label: 'Division 2', value: 'division2' },
+    // Add divisions for country 1
+  ],
+  country2: [
+    { label: 'Division A', value: 'divisionA' },
+    { label: 'Division B', value: 'divisionB' },
+    // Add divisions for country 2
+  ],
+  // Add more divisions by country as needed
+};
+
+const citiesByDivision = {
+  division1: [
+    { label: 'City A', value: 'cityA' },
+    { label: 'City B', value: 'cityB' },
+    // Add cities for division 1
+  ],
+  division2: [
+    { label: 'City X', value: 'cityX' },
+    { label: 'City Y', value: 'cityY' },
+    // Add cities for division 2
+  ],
+  divisionA: [
+    { label: 'City Alpha', value: 'cityAlpha' },
+    { label: 'City Beta', value: 'cityBeta' },
+    // Add cities for division A
+  ],
+  divisionB: [
+    { label: 'City Gamma', value: 'cityGamma' },
+    { label: 'City Delta', value: 'cityDelta' },
+    // Add cities for division B
+  ],
+  // Add more cities by division as needed
+};
+
 const Profile = () => {
   const navigation = useNavigation();
   const { user, auth } = useAuthentication(app);
@@ -39,6 +83,22 @@ const Profile = () => {
   const [photoURL, setPhotoURL] = useState('');
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedDivision, setSelectedDivision] = useState(null);
+  const [selectedCities, setSelectedCities] = useState(null);
+
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country);
+    setSelectedDivision(null);
+    setSelectedCities(null);
+  };
+
+  const handleDivisionChange = (division) => {
+    setSelectedDivision(division);
+    setSelectedCities(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,9 +139,7 @@ const Profile = () => {
         fetchData(); 
       }
     };
-  
     retrieveUserData(); 
-  
   }, [user]);
   
   
@@ -122,7 +180,10 @@ const Profile = () => {
             const updatedDoc = {
                 displayName: displayName || userData.displayName,
                 phoneNumber: phoneNumber || userData.phoneNumber,
-                photoURL: photoURL || userData.photoURL
+                photoURL: photoURL || userData.photoURL,
+                Country : selectedCountry || userData.selectedCountry,
+                Devision : selectedDivision || userData.selectedDivision,
+                City : selectedCities || userData.selectedCities
             };
             // console.log("Updating profile for user:", userData.email);
             // console.log("Updated document:", updatedDoc);
@@ -183,6 +244,9 @@ const updateAsyncStorage = async (updatedData) => {
 
 
 
+ 
+
+
   return (
     <View >
       {isLoading ? (
@@ -191,29 +255,49 @@ const updateAsyncStorage = async (updatedData) => {
         <View style= {styles.container} >
           <View>
           <View style={styles.image}>
-            
             {userData ? (
               <Image source={{ uri: userData.photoURL }} style={{ width: 180, height: 180, borderRadius: 90 }} />
               ) : (
               <Text><AntDesign name="user" size={175} color="gray" style={{ alignSelf: 'center', marginTop: 10 }} /></Text>
               )}
-            </View>
+          </View>
+          <View>
               {
                 userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Name : {userData.displayName}</Text>) : 
                 (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Name : </Text>)
               }
-              <View>
+          </View>
+          <View>
               {
                 userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>Email : {userData.email} </Text>) : 
                 (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Email : </Text>)
               }
-              </View>
+          </View>
+          <View>
               {
                 userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>Phone Number : {userData.phoneNumber}</Text>) : 
                 (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Phone Number : </Text>)
               }
-            
-            <View style={{ marginVertical:10, width:'auto',display:'flex', flexDirection:'row', gap:2}}>
+          </View>
+          <View>
+              {
+                userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>Country : {userData.Country}</Text>) : 
+                (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Country : </Text>)
+              }
+          </View>
+          <View>
+              {
+                userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>Devision : {userData.Devision}</Text>) : 
+                (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Devision : </Text>)
+              }
+          </View>
+          <View>
+              {
+                userData ? ( <Text style={{ fontFamily: 'serif', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>City : {userData.City}</Text>) : 
+                (<Text style={{ fontFamily: 'serif', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>City : </Text>)
+              }
+          </View>
+          <View style={{ marginVertical:10, width:'auto',display:'flex', flexDirection:'row', gap:2}}>
               <TouchableOpacity style={styles.button} onPress={() => setShowUpdateForm(true)}>
                 <Text style={styles.buttonText}>Update Profile</Text>
               </TouchableOpacity>
@@ -221,17 +305,19 @@ const updateAsyncStorage = async (updatedData) => {
               <TouchableOpacity style={styles.button} onPress={handleLogOut}>
                 <Text style={styles.buttonText}>LogOut</Text>
               </TouchableOpacity>
-            </View>
+          </View>
           </View>
 
-              {/* user will see their bookings */}
+          {/* user will see their bookings */}
           <View>
             <Bookings></Bookings>
           </View>
         </View>
       )}
+
+      {/* update form as modal */}
       {userData && 
-      <Modal visible={showUpdateForm} animationType="slide">
+      <Modal visible={showUpdateForm} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10,color: '#3A3D42' }}>Update Profile</Text>
 
@@ -281,6 +367,45 @@ const updateAsyncStorage = async (updatedData) => {
                   </TouchableOpacity>
                 </View>
             </View>
+            <View>
+            <View style={styles.formControl}>
+              <Text style={styles.label}>Country</Text>
+              <RNPickerSelect
+                style={styles.input}
+                value={selectedCountry}
+                onValueChange={handleCountryChange}
+                items={countries}
+              />
+            </View>
+            {selectedCountry && (
+              <View style={styles.formControl}>
+                <Text style={styles.label}>Division</Text>
+                <RNPickerSelect
+                  style={styles.input}
+                  value={selectedDivision}
+                  onValueChange={handleDivisionChange}
+                  items={divisionsByCountry[selectedCountry]}
+                />
+              </View>
+            )}
+            {selectedDivision && (
+              <View style={styles.formControl}>
+                <Text style={styles.label}>Cities</Text>
+                <RNPickerSelect
+                  style={styles.input}
+                  value={selectedCities}
+                  onValueChange={(city) => setSelectedCities(city)}
+                  items={citiesByDivision[selectedDivision]}
+                />
+              </View>
+            )}
+            <Text style={styles.label}>
+              Address: 
+              {selectedCountry && `Country: ${selectedCountry}, `}
+              {selectedDivision && `Division: ${selectedDivision}, `}
+              {selectedCities && `City: ${selectedCities}`}
+            </Text>
+          </View>
           </View>
           <View style={{display:'flex', flexDirection:'row', gap:2}}>
             <TouchableOpacity style={[styles.button,{flex:0.5}]} onPress={()=> handleUpdateProfile( )}>

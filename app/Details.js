@@ -90,6 +90,7 @@ const Details = () => {
       setDate("");
       setPhoneNumber("");
       setSpecialRequirements("");
+      setSubmitted(true);
     } catch (e) {
       console.error('Error adding document: ', e);
     }
@@ -178,7 +179,7 @@ const Details = () => {
                       />
                     )}
                     <TouchableOpacity onPress={currentInput >= 6 ? () => handleBooking(event) : handleNextInput} style={styles.button}>
-                      <Text style={styles.buttonText}>{currentInput >= 6 ? 'Submit' : 'Next'}</Text>
+                      <Text style={styles.buttonText}>{currentInput >= 6 ? 'Book' : 'Next'}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

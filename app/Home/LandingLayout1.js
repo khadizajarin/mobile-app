@@ -7,14 +7,16 @@ import app from '../Hooks/firebase.config';
 import { signOut } from '@firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {gsap, Back} from 'gsap-rn';
+import {gsap, Back,Power2} from 'gsap-rn';
 
 const LandingLayout1 = () => {
   const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
-      gsap.to(ref.current, { duration: 3, style: { right: 0, left: 50 }, transform: { rotate: 0, scale: 1 }, ease: Back.easeInOut });
+      const timeline = gsap.timeline();
+      timeline.set(ref, {style:{backgroundColor:"#F00"}});
+      timeline.to(ref, {duration:1, style:{backgroundColor:"#F0F"}, ease:Power2.easeInOut});
     }
   }, []);
 
@@ -38,8 +40,6 @@ const LandingLayout1 = () => {
     }
   };
   
-
- 
   return (
     <ScrollView>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F1F2F6", borderBottomWidth: 1, borderBottomColor: '#AB8C56', }}>

@@ -13,10 +13,10 @@ const Upcomings = () => {
             {
               // opacity:0.5,
               duration: 3, 
-              style: { left: 300}, 
+              style: { left: 290}, 
               transform: { rotate: 360, scale: 1 },
               repeat:-1,
-              repeatDelay:3
+              repeatDelay:2
             },
           );
         }
@@ -30,10 +30,10 @@ const Upcomings = () => {
             {
               // opacity:0.5,
               duration: 3, 
-              style: { right: 290 }, 
+              style: { right: 300 }, 
               transform: { rotate: 360, scale: 1 },
               repeat:-1,
-              repeatDelay:3
+              repeatDelay:2
             },
           );
         }

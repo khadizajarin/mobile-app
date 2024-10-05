@@ -7,6 +7,7 @@ import { useNavigation } from 'expo-router';
 import Video from './video';
 import { collection, query, where, updateDoc, doc, getDocs, getDoc } from 'firebase/firestore';
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 
 const Details = () => {
@@ -105,9 +106,18 @@ const Details = () => {
           ) : ( 
             <View>
               {events.filter((event) => (event.id === serviceId)).map((event, id) => (
-                <View key={id} style={{ paddingTop: 10 }}>
-                  <Image source={{ uri: event.image }} style={{  borderRadius: 10, height: 200,  }} />
-                  <Text style={{fontFamily: "serif", fontSize: 20, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>{event.name}</Text>
+                <View key={id} style={{ paddingTop: 10,  }}>
+                  <View style={{ top:0, left: 10, zIndex: 20, flexDirection: 'row', alignItems: 'center',justifyContent:'flex-start' }}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ borderRadius: 100, overflow: 'hidden' }}>
+                      <AntDesign name="leftcircle" size={24} color="#3A3D42" backgroundColor='#AB8C56'/>
+                    </View>
+                      <Text style={{ marginLeft: 8 }}>{event.name}</Text>
+                    </TouchableOpacity>
+                  </View>
+                  
+                  <Image source={{ uri: event.image }} style={{  borderRadius: 10, height: 200, marginTop:8 }} />
+                  <Text style={{fontFamily: "serif", fontSize: 22, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>{event.name}</Text>
                   <Text style={{fontFamily: "serif", fontSize: 18, fontWeight: 'bold', marginTop: 4, color: '#3A3D42' }}>Approximate Cost: {event.price} (For 50 Guests)</Text>
                   <Text style={{fontFamily: "serif", fontSize: 16, marginBottom: 15, color: '#3A3D42' }}>{event.description}</Text>  
 

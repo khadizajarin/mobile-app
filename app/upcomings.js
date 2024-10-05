@@ -50,7 +50,7 @@ const Upcomings = () => {
           <Text style={styles.eventDescription}>Join us for a day of music, fun, and good vibes!</Text>
           <Text style={styles.learnMore}>Click to learn More</Text>
           <View ref={boxRef1} style={{position: "absolute",display: "flex",justifyContent:"center", alignItems:'center', backgroundColor:"#AB8C51", height: 70, width: 70, borderRadius:100, bottom:-40, right:0}}>
-            <Text style={{}}>You are invited🤎</Text>
+            <Text style={{}}>You are invited🤍</Text>
           </View>
         </View>
         <View style={[styles.eventCard,{position:"relative"}]}>

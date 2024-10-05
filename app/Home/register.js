@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ToastAndroid } from 'react-native';
 import { initializeApp } from '@firebase/app';
 import { app, db, collection, addDoc, query, where, getDocs } from '../Hooks/firebase.config';
-import { getAuth, createUserWithEmailAndPassword, signOut } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut, sendEmailVerification,onAuthStateChanged } from '@firebase/auth';
 import useAuthentication from '../Hooks/useAuthentication';
 import { Link, useNavigation } from 'expo-router';
 import { doc, setDoc } from 'firebase/firestore';
@@ -25,6 +25,41 @@ const Register = () => {
         checkEmailExistence();
     }, [email]);
 
+    // const handleRegistration = async () => {
+    //     try {
+    //         if (emailExists) {
+    //             Alert.alert(
+    //                 'Registration Failed',
+    //                 'Email already exists. Please use a different email.',
+    //                 [{ text: 'OK' }],
+    //                 { cancelable: false }
+    //             );
+    //             return;
+    //         }
+
+    //         await createUserWithEmailAndPassword(auth, email, password);
+    //         console.log('User registered successfully!');
+    //         const currentUser = auth.currentUser;
+    //         const userData = {
+    //             email: currentUser.email,
+    //             displayName: '',
+    //             phoneNumber: '',
+    //             photoURL: '',
+    //             role: 'user'
+    //         };
+    //         await setDoc(doc(db, 'users', currentUser.uid), userData);
+    //         ToastAndroid.show('Registered successfully', ToastAndroid.SHORT);
+    //         navigation.navigate('Home');
+    //     } catch (error) {
+    //         console.error('Registration error:', error.message);
+    //         Alert.alert(
+    //             'Registration Failed',
+    //             error.message,
+    //             [{ text: 'OK' }],
+    //             { cancelable: false }
+    //         );
+    //     }
+    // };
     const handleRegistration = async () => {
         try {
             if (emailExists) {
@@ -36,10 +71,14 @@ const Register = () => {
                 );
                 return;
             }
-
-            await createUserWithEmailAndPassword(auth, email, password);
+    
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const currentUser = userCredential.user;
+    
+            // Send email verification
+            await sendEmailVerification(currentUser);
+    
             console.log('User registered successfully!');
-            const currentUser = auth.currentUser;
             const userData = {
                 email: currentUser.email,
                 displayName: '',
@@ -48,7 +87,8 @@ const Register = () => {
                 role: 'user'
             };
             await setDoc(doc(db, 'users', currentUser.uid), userData);
-            ToastAndroid.show('Registered successfully', ToastAndroid.SHORT);
+    
+            ToastAndroid.show('Registered successfully. Please check your email for verification.', ToastAndroid.SHORT);
             navigation.navigate('Home');
         } catch (error) {
             console.error('Registration error:', error.message);
@@ -60,7 +100,7 @@ const Register = () => {
             );
         }
     };
-
+    
     return (
         <View style={styles.container}>
             <Text style={styles.heroTitle}>Join Us Today!</Text>

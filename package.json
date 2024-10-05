@@ -27,7 +27,7 @@
     "@tensorflow/tfjs-react-native": "^1.0.0",
     "axios": "^1.6.8",
     "deprecated-react-native-prop-types": "^5.0.0",
-    "expo": "^50.0.13",
+    "expo": "~50.0.19",
     "expo-camera": "~14.1.1",
     "expo-file-system": "^16.0.8",
     "expo-font": "~11.10.3",

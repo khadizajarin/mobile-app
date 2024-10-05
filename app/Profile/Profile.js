@@ -31,47 +31,66 @@ const saveUserDataToStorage = async (userData) => {
 
 
 const countries = [
-  { label: 'Country 1', value: 'country1' },
-  { label: 'Country 2', value: 'country2' },
-  // Add more countries as needed
+  { label: 'Bangladesh', value: 'bangladesh' },
+  { label: 'Spain', value: 'spain' },
+  { label: 'Australia', value: 'australia' },
 ];
 
 const divisionsByCountry = {
-  country1: [
-    { label: 'Division 1', value: 'division1' },
-    { label: 'Division 2', value: 'division2' },
-    // Add divisions for country 1
+  bangladesh: [
+    { label: 'Dhaka', value: 'dhaka' },
+    { label: 'Narsingdi', value: 'narsingdi' },
+    { label: 'Chattogram', value: 'chattogram' },
   ],
-  country2: [
-    { label: 'Division A', value: 'divisionA' },
-    { label: 'Division B', value: 'divisionB' },
-    // Add divisions for country 2
+  spain: [
+    { label: 'Bercelona', value: 'barcelona' },
+    { label: 'Madrid', value: 'madrid' },
+    { label: 'Valencia', value: 'valencia' },
   ],
-  // Add more divisions by country as needed
+  australia: [
+    { label: 'Queensland', value: 'queensland' },
+    { label: 'Victoria', value: 'victoria' },
+    { label: 'Tasmania', value: 'tasmania' },
+  ],
 };
 
 const citiesByDivision = {
-  division1: [
-    { label: 'City A', value: 'cityA' },
-    { label: 'City B', value: 'cityB' },
-    // Add cities for division 1
+  dhaka: [
+    { label: 'Farmgate', value: 'farmgate' },
+    { label: 'Shahbagh', value: 'Shahbagh' },
   ],
-  division2: [
-    { label: 'City X', value: 'cityX' },
-    { label: 'City Y', value: 'cityY' },
-    // Add cities for division 2
+  narsingdi: [
+    { label: 'Raipura', value: 'raipura' },
+    { label: 'Satirpara', value: 'satirpara' },
   ],
-  divisionA: [
-    { label: 'City Alpha', value: 'cityAlpha' },
-    { label: 'City Beta', value: 'cityBeta' },
-    // Add cities for division A
+  chattogram: [
+    { label: 'Andorkilla', value: 'andorkilla' },
+    { label: 'Zobra', value: 'zobra' },
   ],
-  divisionB: [
-    { label: 'City Gamma', value: 'cityGamma' },
-    { label: 'City Delta', value: 'cityDelta' },
-    // Add cities for division B
+  barcelona: [
+    { label: 'Gracia', value: 'gracia' },
+    { label: 'Sant Marti', value: 'santmarti' },
   ],
-  // Add more cities by division as needed
+  madrid: [
+    { label: 'Aranjuez', value: 'aranjuez' },
+    { label: 'Rascafria', value: 'rascafria' },
+  ],
+  valencia: [
+    { label: 'Castellón', value: 'castellón' },
+    { label: 'Alicante', value: 'alicante' },
+  ],
+  queensland: [
+    { label: 'Brisbane', value: 'Brisbane' },
+    { label: 'Gold Coast', value: 'goldcoast' },
+  ],
+  victoria: [
+    { label: 'Melbourne,', value: 'melbourne,' },
+    { label: 'Ballarat', value: 'ballarat' },
+  ],
+  tasmania: [
+    { label: 'Hobart', value: 'hobart' },
+    { label: 'West Coast', value: 'westcoast' },
+  ],
 };
 
 const Profile = () => {

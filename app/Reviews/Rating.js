@@ -125,7 +125,7 @@ const Rating = () => {
             <MaterialIcons name={'star'} size={50} color={'#AB8C56'} />
           </TouchableOpacity>
         );
-      } else if (i === filledStars + 1 && partialStar !== 0) {
+      } else if (i === filledStars+ 0.2 && partialStar !== 0) {
         starArray.push(
           <TouchableOpacity key={i} onPress={() => handleRating(i)}>
             <MaterialIcons name={'star-half'} size={50} color={'#AB8C56'} />
@@ -154,7 +154,7 @@ const Rating = () => {
         </TouchableOpacity>
       )}
       {userRating !== null && ( // Display user's rating if available
-        <Text style={styles.userRatingText}>Your Rating: {userRating}</Text>
+        <Text style={styles.userRatingText}>Your Rating: {userRating} out of 5</Text>
       )}
       <View style={styles.starsContainer}>{renderStars()}</View>
       <Text style={styles.ratingCount}>Total Ratings: {ratings.length}</Text>

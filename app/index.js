@@ -33,7 +33,7 @@ const ServicesStack = createStackNavigator();
 const ServicesStackScreen = () => (
   <ServicesStack.Navigator>
     <ServicesStack.Screen name="Services" component={Services}  options={{ headerShown: false }}/>
-    <ServicesStack.Screen name="Details" component={Details}  options={{ headerShown: true }}/>
+    <ServicesStack.Screen name="Details" component={Details}  options={{ headerShown: false }}/>
     <ServicesStack.Screen name="Register" component={Register}  options={{ headerShown: true }}/>
     <ServicesStack.Screen name="Rating" component={Rating}  options={{ headerShown: false }}/>
   </ServicesStack.Navigator>
